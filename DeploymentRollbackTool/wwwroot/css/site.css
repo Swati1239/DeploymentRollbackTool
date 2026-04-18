@@ -1,0 +1,78 @@
+@keyframes bgCycle {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+body[data-theme='light'] {
+    animation: bgCycle 10s linear infinite;
+    background: linear-gradient(60deg, #3a0ca3, #7209b7, #f72585, #b5179e);
+    background-size: 300% 300%;
+    color: #212529;
+}
+
+body[data-theme='dark'] {
+    background-color: #0d1117;
+    color: #e6edf3;
+}
+
+.card {
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+}
+
+.theme-toggle {
+    float: right;
+}
+
+.btn-rollback {
+    background-color: #da3633 !important;
+    color: white !important;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .btn-rollback:hover {
+        background-color: #f85149 !important;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(248, 81, 73, 0.4);
+    }
+
+    .btn-rollback:active {
+        transform: scale(0.98);
+    }
+
+.progress-container {
+    display: none;
+    margin-top: 1rem;
+}
+
+.tooltip-custom {
+    cursor: pointer;
+}
+
+.log-toggle {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.log-section {
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.btn-clear {
+    margin-top: 1rem;
+}

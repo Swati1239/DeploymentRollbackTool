@@ -1,0 +1,180 @@
+//Rollback.cshtml
+
+@page
+@model RollbackModel
+@{
+    ViewData["Title"] = "Deployment Rollback Tool";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+<style>
+    body[data-theme='light'] {
+        animation: bgCycle 20s ease infinite;
+        background: linear-gradient(45deg, #3a0ca3, #7209b7, #f72585, #b5179e);
+        background-size: 400% 400%;
+        color: #212529;
+    }
+
+    body[data-theme='dark'] {
+        background-color: #0d1117;
+        color: #e6edf3;
+    }
+
+    @@keyframes bgCycle {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .card {
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+    }
+
+    .theme-toggle {
+        float: right;
+    }
+
+    .btn-rollback {
+        background-color: #da3633;
+        color: white;
+        font-size: 1.1rem;
+        border-radius: 8px;
+    }
+
+        .btn-rollback:hover {
+            background-color: #f85149;
+        }
+
+    .progress-container {
+        display: none;
+        margin-top: 1rem;
+    }
+
+    .tooltip-custom {
+        cursor: pointer;
+    }
+
+    .log-toggle {
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .log-section {
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .btn-clear {
+        margin-top: 1rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Deployment Rollback Tool</h2>
+            <button class="btn btn-sm btn-outline-secondary" onclick="toggleTheme()" data-bs-toggle="tooltip" title="Toggle theme">
+                <i class="fa fa-moon"></i>
+            </button>
+        </div>
+
+        <form method="post" onsubmit="showProgressBar()">
+            <div class="mb-3">
+                <label class="form-label fs-5">Select Version</label>
+                <select class="form-select form-select-lg" name="SelectedVersion" required>
+                    <option value="">-- Select Version --</option>
+                    @foreach (var version in Model.AvailableVersions)
+                    {
+                        <option value="@version">🔁 @version</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-rollback"><i class="fa fa-history me-2"></i>Rollback</button>
+
+            <div class="progress-container" id="progressBar">
+                <div class="progress mt-3">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%">Rolling back...</div>
+                </div>
+            </div>
+        </form>
+
+        <hr class="my-4" />
+
+        <div class="log-toggle" onclick="toggleLogs()">
+            <i class="fa fa-chevron-down me-2"></i> Show/Hide Rollback History
+        </div>
+
+        <div class="log-section mt-3" id="logSection">
+            <ul class="list-group">
+                @foreach (var log in Model.DeploymentLogs)
+                {
+                    <li class="list-group-item"><i class="fa fa-check-circle text-success me-2"></i>@log</li>
+                }
+            </ul>
+
+            @if (Model.DeploymentLogs.Any())
+            {
+                <form method="post" asp-page-handler="Clear">
+                    <button type="submit" class="btn btn-outline-danger btn-clear" data-bs-toggle="tooltip" title="Clear all rollback logs">
+                        <i class="fa fa-trash-alt me-1"></i> Clear History
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    document.body.dataset.theme = localStorage.getItem('theme') || 'light';
+
+    function toggleTheme() {
+        const current = document.body.dataset.theme;
+        const next = current === 'light' ? 'dark' : 'light';
+        document.body.dataset.theme = next;
+        localStorage.setItem('theme', next);
+    }
+
+    function toggleLogs() {
+        const section = document.getElementById('logSection');
+        section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function showProgressBar() {
+        document.getElementById('progressBar').style.display = 'block';
+    }
+    function confirmClear() {
+    return confirm("Are you sure you want to clear the rollback history?");
+    }
+
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("rolledback")) {
+        toastr.success("Rollback completed", "Success");
+    }
+    if (urlParams.has("cleared")) {
+        toastr.info("History cleared", "Info");
+    }
+
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>

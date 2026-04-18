@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentRollbackTool", "DeploymentRollbackTool\DeploymentRollbackTool.csproj", "{9612E3A3-D265-4808-A7A5-063339CD3DC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9612E3A3-D265-4808-A7A5-063339CD3DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9612E3A3-D265-4808-A7A5-063339CD3DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9612E3A3-D265-4808-A7A5-063339CD3DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9612E3A3-D265-4808-A7A5-063339CD3DC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5732E5E8-7D4D-47A0-9ACF-2CF50D9D2CB0}
+	EndGlobalSection
+EndGlobal
